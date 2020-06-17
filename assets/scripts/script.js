@@ -33,7 +33,12 @@ function showHome() {
 $('.ui.dropdown')
   .dropdown();
 
-// ***** FOR NARGIZA TO EDIT
+
+
+
+
+
+// ***** FOR NARGIZA'S CODE FOR RANDOM DRINK START
 
 // BUTTON TO SHOW RANDOM DRINK SECTION
 // id="randomGlass" section on load
@@ -50,6 +55,87 @@ function showRandomDrinkSection(){
 // SHOW RANDOM DRINK SECTION
 // button
 // id="randomDrink"
+// ***** FOR NARGIZA'S CODE FOR RANDOM DRINK start
+const getRandomDrinkBtn = document.getElementById('collins');
+const getRandomDrinkContainer = document.getElementById('randomDrinkResult');
+
+getRandomDrinkBtn.addEventListener('click', () => {
+	fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php')
+		.then(res => res.json())
+		.then(res => {
+		createRandomDrink(res.drinks[0]);
+	});
+});
+
+const createRandomDrink = (drinks) => {
+	const ingredients = [];
+	// Get all ingredients from the object. Up to 15
+	for(let i=1; i<=15; i++) {
+		if(drinks[`strIngredient${i}`]) {
+			ingredients.push(`${drinks[`strIngredient${i}`]} - ${drinks[`strMeasure${i}`]}`)
+		} else {
+			// Stop if no more ingredients
+			break;
+        }
+        document.getElementById("homePage").style.display = "block";
+        document.getElementById("foodPage").style.display = "none";
+        document.getElementById("drinkPage").style.display = "none";
+        document.getElementById("userPage").style.display = "none";
+        document.getElementById("headingStyle").style.display = "none";
+        document.getElementById("moodText").style.display = "none";
+	}
+	
+	const newInnerHTML = `
+		<div class="row">
+			<div class="columns five">
+				<img src="${drinks.strDrinkThumb}" alt="drinks Image">
+				${drinks.strCategory ? `<p><strong>Category:</strong> ${drinks.strCategory}</p>` : ''}
+				${drinks.strArea ? `<p><strong>Area:</strong> ${drinks.strArea}</p>` : ''}
+				${drinks.strTags ? `<p><strong>Tags:</strong> ${drinks.strTags.split(',').join(', ')}</p>` : ''}
+				<h5>Ingredients:</h5>
+				<ul>
+					${ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+				</ul>
+			</div>
+			<div class="columns seven">
+				<h4>${drinks.strDrink}</h4>
+				<p>${drinks.strInstructions}</p>
+			</div>
+		</div>
+		${drinks.strYoutube ? `
+		<div class="row">
+			<h5>Video Recipe</h5>
+			<div class="videoWrapper">
+				<iframe width="420" height="315"
+				src="https://www.youtube.com/embed/${drinks.strYoutube.slice(-11)}">
+				</iframe>
+			</div>
+		</div>` : ''}
+	`;
+	
+	getRandomDrinkContainer.innerHTML = newInnerHTML;
+}
+
+
+// // SOCIAL PANEL JS
+// const floating_btn = document.querySelector('.floating-btn');
+// const close_btn = document.querySelector('.close-btn');
+// const social_panel_container = document.querySelector('.social-panel-container');
+
+// floating_btn.addEventListener('click', () => {
+// 	social_panel_container.classList.toggle('visible')
+// });
+
+// close_btn.addEventListener('click', () => {
+// 	social_panel_container.classList.remove('visible')
+// });
+
+
+
+
+
+
+
 
 // SHOW FOOD MAIN PAGE
 // id="food" button
