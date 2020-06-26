@@ -1,20 +1,5 @@
-
-// SHOW RANDOM DRINK SECTION
-// button
-// id="randomDrink"
-// ***** FOR NARGIZA'S CODE FOR RANDOM DRINK start
-// var randomDrinkArr=["collins","martini","oldFashion","shots","masonJar","margarita"];
-
-
 var getRandomDrinkContainer = document.getElementById('randomDrinkResult');
 
-// $(".glassItem").on('click', function (e) {
-//     fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php') 
-//     	.then(res => res.json())
-// 		.then(res => {
-// 		createRandomDrink(res.drinks[0]);
-// 	});
-// });
 $('.glassItem').on('click', function (e) {
 
     console.log("****", e.target.id);
@@ -73,6 +58,59 @@ var createRandomDrink = (drinks) => {
         mainDrinkContainer.appendTo('#randomDrinkResult');
         var currentDrinkTitle = $('<h2>').text(drinks.strDrink);
         currentDrinkTitle.appendTo(mainDrinkContainer);
+        var drinkStarIcon = $("<i>").attr("class", "right floated star icon");
+            drinkStarIcon.click(function(){
+                drinkStarIcon.attr("class", "orange right floated star icon");
+                //create an object to push to Local Storage
+                //ingredients array
+                var storedIngredients = [];
+                for (var i = 0; i < ingredients.length; i++) {
+                    var thisIngredient = drinks['strIngredient' + i];
+                    var thisMeasurement = drinks['strMeasure' + i];
+                    if (thisIngredient === null || thisIngredient === '' ) {
+                        break;
+                      } else if (thisMeasurement === null) {
+                        storedIngredients.push(thisIngredient);
+                        console.log('This ingredient without measure ' + i + ' = ', thisIngredient);
+                      } else {
+                        var combinedStoredIngredient = (thisMeasurement + ' ' + thisIngredient);
+                        storedIngredients.push(combinedStoredIngredient);
+                        console.log('This ingredient + measure ' + i + ' = ', combinedStoredIngredient)
+                      }
+                };
+
+                var thisObject = {
+                    'name': drinks.strDrink,
+                    'pic': drinks.strDrinkThumb,
+                    'ingredients': storedIngredients,
+                    'directions': (drinks.strInstructions).split('\r\n')
+                }
+
+                console.log('This is the random object', thisObject);
+                
+                myStoredDrinks = JSON.parse(localStorage.getItem('savedDrinks')) || [];
+                console.log('myStoredDrinks outside the for loop to check duplicates = ', myStoredDrinks);
+                var saveDrink = true;
+                    for (var i = 0; i < myStoredDrinks.length; i++){
+                        console.log('myStoredDrinks.name = ', myStoredDrinks.name);
+                        console.log('thisObject.name = ', thisObject.name); 
+                        if(myStoredDrinks[i].name == thisObject.name){
+                            console.log('This drink has already been saved. Do not add to localStorage.')
+                            saveDrink = false;
+                        } else { 
+                            console.log('Inside else statement. No match yet, i = ', i , '. myStoredDrinks.length = ', myStoredDrinks.length);
+                        }
+                    }
+                    if(saveDrink === true){
+                        myStoredDrinks.push(thisObject);
+
+                        localStorage.setItem('savedDrinks', JSON.stringify(myStoredDrinks));
+                        console.log('The drink has been added to local storage.');
+                        console.log('The object that was added is: ', thisObject);
+                        console.log('myStoredDrinks = ', myStoredDrinks);
+                    }
+            })
+            drinkStarIcon.appendTo(currentDrinkTitle);
         //  Retrieve the drink photo
         var currentDrinkImage = $('<img>').attr({ src: drinks.strDrinkThumb, class: 'ui rounded image' });
         currentDrinkImage.appendTo(mainDrinkContainer);

@@ -177,7 +177,9 @@ function renderNamePic(mealObj) {
 } // end renderNamePic
 
 //User menu button click starts renderMealHistory function
-$('#user').click(function () {
+$('#user').on('click', showMealProfile);
+
+function showMealProfile(){
   drinksObjectArray = [];
   $('#foodList').empty();
   $('#savedFoodList').empty();
@@ -205,7 +207,7 @@ $('#user').click(function () {
       $('<p>').attr('class', 'header').text(recipeTitle).appendTo(recipeTitleDiv);
     }
   }
-});//END SAVED MEALS LIST DISPLAY FUNCTION
+};//END SAVED MEALS LIST DISPLAY FUNCTION
 
 //Display Recipe when user clicks image from User Page - MODAL
 $('#savedFoodList').click(function () {
@@ -316,3 +318,9 @@ function showUserProfile() {
   document.getElementById("userPage").style.display = "block";
 }
 
+//Clear Meal Storage Function
+$('#clearMealStorage').click(function(){
+  mealHistory = [];
+  localStorage.setItem('userRecipes', JSON.stringify(mealHistory));
+  showMealProfile();
+});
