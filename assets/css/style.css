@@ -190,3 +190,7 @@ h3 {
   0 100px 80px rgba(0, 0, 0, 0.12)
 ;
 }
+
+#clearMealStorage, #clearDrinkStorage {
+  margin-bottom: 15px;
+}

@@ -298,6 +298,7 @@ var storedDrinksObject = [];
 
 //1. User clicks the User Icon
 $("#user").on("click", showUserProfile);
+
 function showUserProfile() {
   //2.Empty saved drinks list
   $('#savedDrinkList').empty();
@@ -387,5 +388,12 @@ $('#savedDrinkList').click(function (event) {
         thisDrinkDirectionsContainer.appendTo('#savedDrinkList');
       }
     }
+});
+
+//Clear Drinks Storage Function
+$('#clearDrinkStorage').click(function(){
+    myStoredDrinks = [];
+    localStorage.setItem('savedDrinks', JSON.stringify(myStoredDrinks));
+    showUserProfile();
 });
 
