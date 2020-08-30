@@ -3,7 +3,7 @@ Our application includes a simple, responsive user interface and the ability to 
 
 
 # Deployed
-https://mackenzieraeclark.github.io/Project1/
+https://mackenzieraeclark.github.io/Eat-Drink/
 
 
 
